@@ -901,4 +901,8 @@ And also:
 
 - Used `node-postgres` to start setting up the basis for an excellent back-end API for our current project.
 
+### Git Commit
 
+We never touched our `.gitignore`: make sure to go into it and add `node_modules`. 
+
+Then `git add .`, `git commit -m "my commit message"`, and `git push origin master`
