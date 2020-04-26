@@ -85,10 +85,6 @@ Initialize file structure:
 
 ```
 ~/curriculum/juicebox
-├── public
-|   ├── index.html
-|   ├── app.js
-|   └── style.css
 ├── db
 |   ├── index.js
 |   └── seed.js
@@ -354,7 +350,10 @@ Back in our `index.js` file, let's start building some helper functions that we 
 // inside db/index.js
 
 async function getAllUsers() {
-  const { rows } = await client.query(`SELECT id, username FROM users;`);
+  const { rows } = await client.query(
+    `SELECT id, username 
+    FROM users;
+  `);
 
   return rows;
 }

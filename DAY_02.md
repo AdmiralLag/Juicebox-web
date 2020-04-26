@@ -414,7 +414,7 @@ async function createInitialPosts() {
 }
 ```
 
-Then work on `testDb`. You can use my final code:
+Then work on `testDb`. You can use my final code, or write your own tests.
 
 ```js
 async function testDB() {
