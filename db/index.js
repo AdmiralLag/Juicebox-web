@@ -165,6 +165,8 @@ async function getAllPosts() {
       FROM posts;
     `);
 
+    console.log("HERE________>", postIds)
+
     const posts = await Promise.all(postIds.map(
       post => getPostById( post.id )
     ));
