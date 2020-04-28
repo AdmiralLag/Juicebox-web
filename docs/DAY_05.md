@@ -426,8 +426,73 @@ User is set: {
 
 Hooray! We can consider users to be logged in when `req.user` is set in all of our routes.
 
-What a day.
+## Create Users
+
+When a `POST` request comes in to `/api/users/register`, we need to read off the 4 fields, and create a new user.
+
+First, we should check to see if that username is already taken, and if so, pass `next` a reasonable error.
+
+If not, try to create the user with the supplied fields.
+
+On success, sign and return a token with the `user.id` and the `username`.
+
+And, as usual: catch any errors from the try block, and forward them to our error handling middleware:
+
+```js
+usersRouter.post('/register', async (req, res, next) => {
+  const { username, password, name, location } = req.body;
+
+  try {
+    const _user = await getUserByUsername(username);
+  
+    if (_user) {
+      next({
+        name: 'UserExistsError',
+        message: 'A user by that username already exists'
+      });
+    }
+
+    const user = await createUser({
+      username,
+      password,
+      name,
+      location,
+    });
+
+    const token = jwt.sign({ 
+      id: user.id, 
+      username
+    }, process.env.JWT_SECRET, {
+      expiresIn: '1w'
+    });
+
+    res.send({ 
+      message: "thank you for signing up",
+      token 
+    });
+  } catch ({ name, message }) {
+    next({ name, message })
+  } 
+});
+```
+
+Try it out:
+
+```bash
+# missing a field
+curl http://localhost:3000/api/users/register -H "Content-Type: application/json" -X POST -d '{"username": "syzygy", "password": "stars", "name": "josiah"}' 
+
+# successful
+curl http://localhost:3000/api/users/register -H "Content-Type: application/json" -X POST -d '{"username": "syzygys", "password": "stars", "name": "josiah", "location": "quebec"}'
+
+# duplicate username
+curl http://localhost:3000/api/users/register -H "Content-Type: application/json" -X POST -d '{"username": "syzygys", "password": "stars", "name": "josiah", "location": "quebec"}'
+```
+
+On success, you should get back a token. Try using that to log in with our previous route. Neat, right?
 
 ## Wrap up
+
+What a day!
 
 Go ahead, commit your code, and we will finish up the rest of the API over the next few days.
