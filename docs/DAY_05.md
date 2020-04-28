@@ -436,7 +436,9 @@ If not, try to create the user with the supplied fields.
 
 On success, sign and return a token with the `user.id` and the `username`.
 
-And, as usual: catch any errors from the try block, and forward them to our error handling middleware:
+And, as usual: catch any errors from the try block, and forward them to our error handling middleware.
+
+Don't forget to add `createUser` to the destructuring from our database up at the top.
 
 ```js
 usersRouter.post('/register', async (req, res, next) => {
