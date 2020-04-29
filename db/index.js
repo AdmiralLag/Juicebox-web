@@ -73,7 +73,10 @@ async function getUserById(userId) {
     `);
 
     if (!user) {
-      return null
+      throw {
+        name: "UserNotFoundError",
+        message: "A user with that id does not exist"
+      }
     }
 
     user.posts = await getPostsByUser(userId);
@@ -86,11 +89,18 @@ async function getUserById(userId) {
 
 async function getUserByUsername(username) {
   try {
-    const { rows: [user] } = await client.query(`
+    const { rows: [ user ] } = await client.query(`
       SELECT *
       FROM users
       WHERE username=$1
-    `, [username]);
+    `, [ username ]);
+
+    if (!user) {
+      throw {
+        name: "UserNotFoundError",
+        message: "A user with that username does not exist"
+      }
+    }
 
     return user;
   } catch (error) {
@@ -179,8 +189,6 @@ async function getAllPosts() {
       FROM posts;
     `);
 
-    console.log("HERE________>", postIds)
-
     const posts = await Promise.all(postIds.map(
       post => getPostById( post.id )
     ));
@@ -198,6 +206,13 @@ async function getPostById(postId) {
       FROM posts
       WHERE id=$1;
     `, [postId]);
+
+    if (!post) {
+      throw {
+        name: "PostNotFoundError",
+        message: "Could not find a post with that postId"
+      };
+    }
 
     const { rows: tags } = await client.query(`
       SELECT tags.*
@@ -303,7 +318,7 @@ async function createPostTag(postId, tagId) {
       INSERT INTO post_tags("postId", "tagId")
       VALUES ($1, $2)
       ON CONFLICT ("postId", "tagId") DO NOTHING;
-    `, [postId, tagId]);
+    `, [ postId, tagId ]);
   } catch (error) {
     throw error;
   }
@@ -343,6 +358,7 @@ module.exports = {
   getAllUsers,
   getUserById,
   getUserByUsername,
+  getPostById,
   createPost,
   updatePost,
   getAllPosts,
