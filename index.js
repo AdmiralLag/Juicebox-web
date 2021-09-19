@@ -24,6 +24,6 @@ server.use('/api', apiRouter);
 const { client } = require('./db');
 client.connect();
 
-server.listen(PORT, 'localhost', () => {
+server.listen(PORT, () => {
   console.log("The server is up on port", PORT);
 });

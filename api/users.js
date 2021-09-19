@@ -9,7 +9,7 @@ const {
 
 const jwt = require('jsonwebtoken');
 
-usersRouter.get('/', async (req, res) => {
+usersRouter.get('/', async (req, res, next) => {
   try {
     const users = await getAllUsers();
   
