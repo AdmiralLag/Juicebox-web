@@ -10,7 +10,7 @@ const {
   getPostById,
 } = require('../db');
 
-postsRouter.get('/', async (req, res) => {
+postsRouter.get('/', async (req, res, next) => {
   try {
     const allPosts = await getAllPosts();
 
