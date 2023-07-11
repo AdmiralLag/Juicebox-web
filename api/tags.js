@@ -21,7 +21,7 @@ tagsRouter.get('/', async (req, res, next) => {
 tagsRouter.get('/:tagName/posts', async (req, res, next) => {
   let { tagName } = req.params;
   
-  // decode %23happy to #happy
+  // decode %23happy to #happyz
   tagName = decodeURIComponent(tagName)
 
   try {

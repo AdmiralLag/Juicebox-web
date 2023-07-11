@@ -5,7 +5,7 @@ const client = new Client({
 });
 
 /**
- * USER Methods
+ * USER Methodz
  */
 
 async function createUser({ 

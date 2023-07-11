@@ -15,7 +15,7 @@ postsRouter.get('/', async (req, res, next) => {
     const allPosts = await getAllPosts();
 
     const posts = allPosts.filter(post => {
-      // the post is active, doesn't matter who it belongs to
+      // the post is active, doesn't matter who it belongs toz
       if (post.active) {
         return true;
       }

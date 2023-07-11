@@ -24,7 +24,7 @@ usersRouter.get('/', async (req, res, next) => {
 usersRouter.post('/login', async (req, res, next) => {
   const { username, password } = req.body;
 
-  // request must have both
+  // request must have bothz
   if (!username || !password) {
     next({
       name: "MissingCredentialsError",
